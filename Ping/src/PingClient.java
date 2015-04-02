@@ -9,6 +9,8 @@ import java.util.Random;
 
 /*
 * Server to process ping requests over UDP. java PingClient host port
+*this program interfaces with the server program provieded on the website and 
+*is initiated by appending the ip adress of the server 127.0.0.1 for local ip and the port number after it
 */
 public class PingClient
 {
@@ -24,25 +26,11 @@ return;
 String ServerName =args[0];	
 int port = Integer.parseInt(args[1]);
 
-
-// Create a datagram socket for receiving and sending UDP packets
-// through the port specified on the command line.
 DatagramSocket socket = new DatagramSocket();
 InetAddress IPAddress =InetAddress.getByName(ServerName);
-// Processing loop.
-
-// You should write the client so that it sends
-// 10 ping requests to the server, separated by
-// approximately one second.
 
 for(int i=0;i<10;i++){
 
-// Create a datagram packet to hold outgoing UDP packet.
-
-
-//Each message contains
-// a payload of data that includes the keyword PING,
-// a sequence number, and a timestamp.
 long SendTime = System.currentTimeMillis();
 String Message = "Ping "+ i + " " + SendTime + "\n";
 DatagramPacket request =
@@ -65,39 +53,19 @@ Thread.sleep(1000);
 
 }
 
-// After sending each packet, the client waits up
-// to one second to receive a reply.
-// If one seconds goes by without a reply from the server,
-// then the client assumes that its packet or the
-// server's reply packet has been lost in the network.
 
 }
 
-/*
-* Print ping data to the standard output stream.
-*/
 private static void printData(DatagramPacket request) throws Exception
 {
-// Obtain references to the packet's array of bytes.
+
 byte[] buf = request.getData();
 
-// Wrap the bytes in a byte array input stream,
-// so that you can read the data as a stream of bytes.
+
 ByteArrayInputStream bais = new ByteArrayInputStream(buf);
-
-// Wrap the byte array output stream in an input stream reader,
-// so you can read the data as a stream of characters.
 InputStreamReader isr = new InputStreamReader(bais);
-
-// Wrap the input stream reader in a bufferred reader,
-// so you can read the character data a line at a time.
-// (A line is a sequence of chars terminated by any combination of \r and \n.)
 BufferedReader br = new BufferedReader(isr);
-
-// The message data is contained in a single line, so read this line.
 String line = br.readLine();
-
-// Print host address and data received from it.
 System.out.println(
 "Received from " +
 request.getAddress().getHostAddress() +
